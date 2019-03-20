@@ -20,7 +20,7 @@ namespace Utils
         /// <summary>
         /// 连接字符串
         /// </summary>
-        public static readonly string ConnectionString;
+        public static string ConnectionString;
 
         /// <summary>
         /// redis 连接对象
@@ -1251,6 +1251,21 @@ namespace Utils
         }
 
         #endregion private method
+
+        static TimeSpan _InitTick = new TimeSpan(10000, 0, 0, 0);
+        public static void InitTick()
+        {
+            Db().StringSet("tick", "0", _InitTick, When.NotExists);
+        }
+
+        public static TimeSpan Tick
+        {
+            get
+            {
+                var ret = Db().KeyTimeToLive("tick");
+                return _InitTick - (TimeSpan)ret;
+            }
+        }
     }
 
     public class RedisConnectException : Exception
