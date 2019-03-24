@@ -9,6 +9,7 @@ using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Mvc;
 using Commission.Server.Models;
 using static Commission.Server.ProviderModel;
+using Commission.Server.Exceptions;
 
 namespace Commission.Server
 {
@@ -18,58 +19,27 @@ namespace Commission.Server
     [ParamValid(Order = 2)]
     [AgentValidate(Order = 1)]
     [WebApiExceptionFilter]
+    [JsonFormat]
+
     public class ProviderController : AgentController
     {
         [HttpGet("all")]
-        public async Task<ReturnModel> All()
+        public async Task<Company> All()
         {
-            var ret = new AllReturn();
-
-            var sql = "select * from CompanyPortal;";
-            var data = await MySqlHelper.ExecuteDatasetAsync(PlatformConnectionString, sql);
-            foreach (DataRow row in data.Tables[0].Rows)
-            {
-                var cmp = new ProviderModel.Company() {
-                    CompanyId = (int)row["CompanyId"],
-                    CompanyName = (string)row["CompanyName"].ToMyString(),
-                    Status = (int)row["Status"],
-                    NumberOfNonclosed = (int)row["NumberOfNonclosed"],
-                    AmountOfNonclosed = (int)row["AmountOfNonclosed"],
-                };
-                ret.Add(cmp);
-            }
-            return new ReturnModel(ECode.SUCCESS, "成功", ret);
+            throw new FailException(ECode.PARAMETER_ERROR,"ddddd");
+            return new Company();
         }
 
         [HttpPost("enable")]
-        public async Task<ReturnModel> Enable([FromBody] EnableRequest req)
+        public async Task<bool> Enable([FromBody] EnableRequest req)
         {
-            var sql = "update CompanyPortal set Status = @Status where CompanyId=@CompanyId";
-            var ret = await MySqlHelper.ExecuteNonQueryAsync(PlatformConnectionString, sql
-                , new MySqlParameter("@Status", req.Enable)
-                , new MySqlParameter("@CompanyId", req.CompanyId)
-                );
-            if (ret == 1)
-                return new ReturnModel(ECode.SUCCESS, "成功");
-            else
-                return new ReturnModel(ECode.DATA_UNEXIST, "失败");
+            return true;
         }
 
         [HttpGet("records/{id}")]
-        public async Task<ReturnModel> LogRecord(int id)
+        public async Task LogRecord(int id)
         {
-            var data = new List<LogRecord>();
-            for (int i = 0; i < 10; i++)
-            {
-                var rec = new LogRecord() {
-                    Time = "2019/12/12(三) 00:00:00",
-                    Content = "test",
-                    Operator = "pgk123",
-                };
-                data.Add(rec);
-            }
-            var ret = new ReturnModel(ECode.SUCCESS, "成功", data);
-            return await Task.FromResult(ret);
+            await Task.FromResult("");
         }
     }
 

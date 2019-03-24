@@ -3,3 +3,7 @@
 /.vs/Commission.Server/v15/.suo
 /.vs/Commission.Server/v15/Server/sqlite3/db.lock
 /.vs/Commission.Server/v15/Server/sqlite3/storage.ide
+/logfile/*.log
+/.vs/Commission.Server/v15/Server/sqlite3/storage.ide-shm
+/.vs/Commission.Server/v15/Server/sqlite3/storage.ide-wal
+/.vs/config/applicationhost.config

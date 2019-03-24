@@ -23,6 +23,11 @@ namespace Commission.Server
 
             base.OnActionExecuting(context);
         }
+
+        public override void OnResultExecuted(ResultExecutedContext context)
+        {
+            base.OnResultExecuted(context);
+        }
     }
 }
 

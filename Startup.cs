@@ -53,6 +53,8 @@ namespace Commission.Server
             }
 
             app.UseMvc();
+            app.UseWebSockets();
+            //app.UseMiddleware<ComputeStatusWebsocket>();
 
             Log.Logger("Startup").Info("system startup ...");
         }

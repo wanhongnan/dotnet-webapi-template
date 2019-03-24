@@ -20,7 +20,11 @@ namespace Commission.Server
             AgentIdentity identity = null;
             long agentid = 0;
             //系统级错误
-            if (e is NoLoginException)
+            if (e is FailException) {
+                var fexp = e as FailException;
+                ret = new ReturnModel(fexp.Code, fexp.Msg, fexp.RetData);
+            }
+            else if (e is NoLoginException)
                 ret = new ReturnModel(ECode.TOKEN_ERROR, "TOKEN错误");
             else if (e is RedisConnectException)
                 ret = new ReturnModel(ECode.SYSTEM_ERROR, "系统异常", e.Message);
